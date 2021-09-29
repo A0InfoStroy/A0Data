@@ -2,7 +2,10 @@ SELECT
   [A0Proj].Mark AS [Шифр проекта],
   [OSTitle].Shifr AS [Шфир ОС],
   [LSTitle].Shifr AS [Шифр ЛС], 
-  [LSTotal].Estimate_S, [LSTotal].Estimate_M, [LSTotal].Estimate_E, [LSTotal].Estimate_O
+  [LSTotal].Estimate_S AS [9 Сметная стоимость строительные], 
+  [LSTotal].Estimate_M AS [9 Сметная стоимость монтажные], 
+  [LSTotal].Estimate_E AS [9 Сметная стоимость оборудование],
+  [LSTotal].Estimate_O AS [9 Сметная стоимость прочие]
 FROM [LSTitle]
 	-- Итоги по составляющим
 	LEFT JOIN [LSTotal] ON [LSTitle].ProjID = [LSTotal].ProjID 
