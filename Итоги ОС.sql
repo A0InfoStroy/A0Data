@@ -1,19 +1,19 @@
--- Итоги ОС
+п»ї-- РС‚РѕРіРё РћРЎ
 SELECT 
-  [A0Proj].Mark AS [Шифр проекта],
-  [OSTitle].Shifr AS [Шифр ОС],
-  [OSTitle].OSName AS [Наименование ОС],
-  [OSTotal].Estimate_S AS [ОС Сметная стоимость ОС строительные], 
-  [OSTotal].Estimate_M AS [ОС Сметная стоимость ОС монтажные], 
-  [OSTotal].Estimate_E AS [ОС Сметная стоимость ОС оборудование], 
-  [OSTotal].Estimate_O AS [ОС Сметная стоимость ОС прочие]
+  [A0Proj].Mark AS [РЁРёС„СЂ РїСЂРѕРµРєС‚Р°],
+  [OSTitle].Shifr AS [РЁРёС„СЂ РћРЎ],
+  [OSTitle].OSName AS [РќР°РёРјРµРЅРѕРІР°РЅРёРµ РћРЎ],
+  [OSTotal].Estimate_S AS [РћРЎ РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РћРЎ СЃС‚СЂРѕРёС‚РµР»СЊРЅС‹Рµ], 
+  [OSTotal].Estimate_M AS [РћРЎ РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РћРЎ РјРѕРЅС‚Р°Р¶РЅС‹Рµ], 
+  [OSTotal].Estimate_E AS [РћРЎ РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РћРЎ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ], 
+  [OSTotal].Estimate_O AS [РћРЎ РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РћРЎ РїСЂРѕС‡РёРµ]
 FROM [OSTitle]
-	-- Проект
+	-- РџСЂРѕРµРєС‚
 	JOIN [A0Proj] ON [OSTitle].ProjID = [A0Proj].ProjId
-	-- Итоги по составляющим
+	-- РС‚РѕРіРё РїРѕ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РёРј
 	LEFT JOIN [OSTotal] ON [OSTotal].ProjID = [OSTitle].ProjID 
 		AND [OSTotal].OSTotalID = [OSTitle].AllTotalID
-WHERE [A0Proj].IncludeInTotals = 1 -- Включать Проект в итоги комплекса (0, 1)
-	AND [OSTitle].IncludeInTotals = 1 -- Включать ОС в итоги Проекта (0, 1)
-	AND [OSTitle].ProjID = 221 -- ИД проекта	 
-  --AND [OSTitle].GUID =  -- GUID ОС
+WHERE [A0Proj].IncludeInTotals = 1 -- Р’РєР»СЋС‡Р°С‚СЊ РџСЂРѕРµРєС‚ РІ РёС‚РѕРіРё РєРѕРјРїР»РµРєСЃР° (0, 1)
+	AND [OSTitle].IncludeInTotals = 1 -- Р’РєР»СЋС‡Р°С‚СЊ РћРЎ РІ РёС‚РѕРіРё РџСЂРѕРµРєС‚Р° (0, 1)
+	AND [OSTitle].ProjID = 221 -- РР” РїСЂРѕРµРєС‚Р°	 
+  --AND [OSTitle].GUID =  -- GUID РћРЎ

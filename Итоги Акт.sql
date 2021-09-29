@@ -1,56 +1,56 @@
-SELECT 
-  [A0Proj].Mark AS [Шифр проекта],
-  [OSTitle].Shifr AS [Шфир ОС],
-  [LSTitle].Shifr AS [Шифр ЛС], 
-  [ActTitle].Shifr AS [Шифр Акт], 
-  [ActTotal].Estimate_S AS [9 Сметная стоимость строительные], 
-  [ActTotal].Estimate_M AS [9 Сметная стоимость монтажные],  
-  [ActTotal].Estimate_E AS [9 Сметная стоимость оборудование], 
-  [ActTotal].Estimate_O AS [9 Сметная стоимость прочие]
+п»їSELECT 
+  [A0Proj].Mark AS [РЁРёС„СЂ РїСЂРѕРµРєС‚Р°],
+  [OSTitle].Shifr AS [РЁС„РёСЂ РћРЎ],
+  [LSTitle].Shifr AS [РЁРёС„СЂ Р›РЎ], 
+  [ActTitle].Shifr AS [РЁРёС„СЂ РђРєС‚], 
+  [ActTotal].Estimate_S AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ СЃС‚СЂРѕРёС‚РµР»СЊРЅС‹Рµ], 
+  [ActTotal].Estimate_M AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РјРѕРЅС‚Р°Р¶РЅС‹Рµ],  
+  [ActTotal].Estimate_E AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ], 
+  [ActTotal].Estimate_O AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РїСЂРѕС‡РёРµ]
 FROM [LSTitle] AS [ActTitle]
-	-- Итоги акта по составляющим
+	-- РС‚РѕРіРё Р°РєС‚Р° РїРѕ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РёРј
 	LEFT JOIN [LSTotal] AS [ActTotal] ON [ActTitle].ProjID = [ActTotal].ProjID 
 		AND [ActTitle].LSTitleID = [ActTotal].LSTitleID
 		AND [ActTitle].LSAllTotalID = [ActTotal].LSTotalID
-	-- Порядок актов
+	-- РџРѕСЂСЏРґРѕРє Р°РєС‚РѕРІ
 	LEFT JOIN [LSOrder] AS [ActOrder] ON [ActTitle].ProjID = [ActOrder].ProjID 
 		AND [ActTitle].OSID = [ActOrder].OSTitleID
 		AND [ActTitle].LSTitleID = [ActOrder].LSTitleID
-	-- Бизнес стадии
+	-- Р‘РёР·РЅРµСЃ СЃС‚Р°РґРёРё
 	LEFT JOIN [BusinessOper] ON [BusinessOper].busOpID = [ActTitle].BusOpID
-	-- ЛС
+	-- Р›РЎ
 	JOIN [LSTitle] ON [LSTitle].ProjID = [ActTitle].ProjID
 		AND [LSTitle].OSID = [ActTitle].OSID
 		AND [LSTitle].LSTitleID = [ActTitle].ActLSID
-	-- Порядок ЛС
+	-- РџРѕСЂСЏРґРѕРє Р›РЎ
 	LEFT JOIN [LSOrder] ON [LSTitle].ProjID = [LSOrder].ProjID 
 		AND [LSTitle].OSID = [LSOrder].OSTitleID
 		AND [LSTitle].LSTitleID = [LSOrder].LSTitleID
-	-- ОС
+	-- РћРЎ
 	JOIN [OSTitle] ON [LSTitle].ProjID = [OSTitle].ProjID 
 		AND [LSTitle].OSID = [OSTitle].OSTitleID
-	-- Порядок ОС
+	-- РџРѕСЂСЏРґРѕРє РћРЎ
 	LEFT JOIN [OSOrder] ON  [OSTitle].ProjID = [OSOrder].ProjID 
 		AND [OSTitle].OSTitleID = [OSOrder].OSTitleID
-	-- Проект
+	-- РџСЂРѕРµРєС‚
 	JOIN [A0Proj] ON [LSTitle].ProjID = [A0Proj].ProjID
-	-- Порядок Проектов
+	-- РџРѕСЂСЏРґРѕРє РџСЂРѕРµРєС‚РѕРІ
 	LEFT JOIN [ProjOrder] ON [A0Proj].ProjID = [ProjOrder].ProjID 
-WHERE [ActTitle].SmDUse IN (1) -- Тип данных актов
-  AND [LSTitle].SmDUse IN (0) -- Тип данных ЛС
-  AND [LSTitle].IncludeKind = 0 -- Режим включения Локальной сметы в итоги Объектной сметы ('' = 0, 'И')
-  AND [OSTitle].IncludeInTotals = 1 -- Включать ОС в итоги проекта
-  AND [A0Proj].IncludeInTotals = 1 -- Включать Проект в итоги комплекса
-  AND [A0Proj].ProjId = 253 -- ИД проекта
-  --AND [A0Proj].GUID =  -- GUID проекта
+WHERE [ActTitle].SmDUse IN (1) -- РўРёРї РґР°РЅРЅС‹С… Р°РєС‚РѕРІ
+  AND [LSTitle].SmDUse IN (0) -- РўРёРї РґР°РЅРЅС‹С… Р›РЎ
+  AND [LSTitle].IncludeKind = 0 -- Р РµР¶РёРј РІРєР»СЋС‡РµРЅРёСЏ Р›РѕРєР°Р»СЊРЅРѕР№ СЃРјРµС‚С‹ РІ РёС‚РѕРіРё РћР±СЉРµРєС‚РЅРѕР№ СЃРјРµС‚С‹ ('' = 0, 'Р')
+  AND [OSTitle].IncludeInTotals = 1 -- Р’РєР»СЋС‡Р°С‚СЊ РћРЎ РІ РёС‚РѕРіРё РїСЂРѕРµРєС‚Р°
+  AND [A0Proj].IncludeInTotals = 1 -- Р’РєР»СЋС‡Р°С‚СЊ РџСЂРѕРµРєС‚ РІ РёС‚РѕРіРё РєРѕРјРїР»РµРєСЃР°
+  AND [A0Proj].ProjId = 253 -- РР” РїСЂРѕРµРєС‚Р°
+  --AND [A0Proj].GUID =  -- GUID РїСЂРѕРµРєС‚Р°
 
--- Тип данных SmDUse
---'ЛС' = 0, 'Акт', 'Затраты',
-    --'Акт-затрата', 'ЛС как ОС', 'ПИР',
-    --'Акт на остатки',
-    --'Прогноз', 'Остаток прогноза',
-    --'Сверхнормативный расход ресурсов',
-    --'Утвержденная', 'Неутвержденная',
-    --'Предварительная', 'Укрупненная', 'Калькуляция',
-    --'Акт план PM', 'Акт факт PM'
+-- РўРёРї РґР°РЅРЅС‹С… SmDUse
+--'Р›РЎ' = 0, 'РђРєС‚', 'Р—Р°С‚СЂР°С‚С‹',
+    --'РђРєС‚-Р·Р°С‚СЂР°С‚Р°', 'Р›РЎ РєР°Рє РћРЎ', 'РџРР ',
+    --'РђРєС‚ РЅР° РѕСЃС‚Р°С‚РєРё',
+    --'РџСЂРѕРіРЅРѕР·', 'РћСЃС‚Р°С‚РѕРє РїСЂРѕРіРЅРѕР·Р°',
+    --'РЎРІРµСЂС…РЅРѕСЂРјР°С‚РёРІРЅС‹Р№ СЂР°СЃС…РѕРґ СЂРµСЃСѓСЂСЃРѕРІ',
+    --'РЈС‚РІРµСЂР¶РґРµРЅРЅР°СЏ', 'РќРµСѓС‚РІРµСЂР¶РґРµРЅРЅР°СЏ',
+    --'РџСЂРµРґРІР°СЂРёС‚РµР»СЊРЅР°СЏ', 'РЈРєСЂСѓРїРЅРµРЅРЅР°СЏ', 'РљР°Р»СЊРєСѓР»СЏС†РёСЏ',
+    --'РђРєС‚ РїР»Р°РЅ PM', 'РђРєС‚ С„Р°РєС‚ PM'
 

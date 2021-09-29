@@ -1,50 +1,50 @@
-SELECT 
-  [A0Proj].Mark AS [Шифр проекта],
-  [OSTitle].Shifr AS [Шфир ОС],
-  [LSTitle].Shifr AS [Шифр ЛС], 
-  [LSTotal].Estimate_S AS [9 Сметная стоимость строительные], 
-  [LSTotal].Estimate_M AS [9 Сметная стоимость монтажные], 
-  [LSTotal].Estimate_E AS [9 Сметная стоимость оборудование],
-  [LSTotal].Estimate_O AS [9 Сметная стоимость прочие]
+п»їSELECT 
+  [A0Proj].Mark AS [РЁРёС„СЂ РїСЂРѕРµРєС‚Р°],
+  [OSTitle].Shifr AS [РЁС„РёСЂ РћРЎ],
+  [LSTitle].Shifr AS [РЁРёС„СЂ Р›РЎ], 
+  [LSTotal].Estimate_S AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ СЃС‚СЂРѕРёС‚РµР»СЊРЅС‹Рµ], 
+  [LSTotal].Estimate_M AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РјРѕРЅС‚Р°Р¶РЅС‹Рµ], 
+  [LSTotal].Estimate_E AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ],
+  [LSTotal].Estimate_O AS [9 РЎРјРµС‚РЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РїСЂРѕС‡РёРµ]
 FROM [LSTitle]
-	-- Итоги по составляющим
+	-- РС‚РѕРіРё РїРѕ СЃРѕСЃС‚Р°РІР»СЏСЋС‰РёРј
 	LEFT JOIN [LSTotal] ON [LSTitle].ProjID = [LSTotal].ProjID 
 		AND [LSTitle].LSTitleID = [LSTotal].LSTitleID
 		AND [LSTitle].LSAllTotalID = [LSTotal].LSTotalID
-	-- Итоги суммарные в 2.10
+	-- РС‚РѕРіРё СЃСѓРјРјР°СЂРЅС‹Рµ РІ 2.10
 	--LEFT JOIN [LSTotalView] ON [LSTitle].ProjID = [LSTotalView].ProjID 
 		--AND [LSTitle].LSTitleID = [LSTotalView].LSTitleID 
 		--AND [LSTitle].LSAllTotalID = [LSTotalView].LSTotalID
-	-- Порядок ЛС
+	-- РџРѕСЂСЏРґРѕРє Р›РЎ
 	LEFT JOIN [LSOrder] ON [LSTitle].ProjID = [LSOrder].ProjID 
 	    AND [LSTitle].OSID = [LSOrder].OSTitleID
 		AND [LSTitle].LSTitleID = [LSOrder].LSTitleID
-	-- Бизнес стадии
+	-- Р‘РёР·РЅРµСЃ СЃС‚Р°РґРёРё
 	LEFT JOIN [BusinessOper] ON [BusinessOper].busOpID = [LSTitle].BusOpID
-	-- ОС
+	-- РћРЎ
 	JOIN [OSTitle] ON [LSTitle].ProjID = [OSTitle].ProjID 
 	    AND [LSTitle].OSID = [OSTitle].OSTitleID
-	-- Порядок ОС
+	-- РџРѕСЂСЏРґРѕРє РћРЎ
 	LEFT JOIN [OSOrder] ON  [OSTitle].ProjID = [OSOrder].ProjID 
 		AND [OSTitle].OSTitleID = [OSOrder].OSTitleID
-	-- Проект
+	-- РџСЂРѕРµРєС‚
 	JOIN [A0Proj] ON [LSTitle].ProjID = [A0Proj].ProjID
-	-- Порядок Проектов
+	-- РџРѕСЂСЏРґРѕРє РџСЂРѕРµРєС‚РѕРІ
 	LEFT JOIN [ProjOrder] ON [A0Proj].ProjID = [ProjOrder].ProjID 
-WHERE [LSTitle].SmDUse IN (0) -- Тип данных
-  AND [LSTitle].IncludeKind = 0 -- Режим включения Локальной сметы в итоги Объектной сметы ('' = 0, 'И')
-  AND [OSTitle].IncludeInTotals = 1 -- Включать ОС в итоги проекта
-  AND [A0Proj].IncludeInTotals = 1 -- Включать Проект в итоги комплекса
-  AND [A0Proj].ProjId = 221 -- ИД проекта
-  --AND [A0Proj].GUID =  -- GUID проекта
+WHERE [LSTitle].SmDUse IN (0) -- РўРёРї РґР°РЅРЅС‹С…
+  AND [LSTitle].IncludeKind = 0 -- Р РµР¶РёРј РІРєР»СЋС‡РµРЅРёСЏ Р›РѕРєР°Р»СЊРЅРѕР№ СЃРјРµС‚С‹ РІ РёС‚РѕРіРё РћР±СЉРµРєС‚РЅРѕР№ СЃРјРµС‚С‹ ('' = 0, 'Р')
+  AND [OSTitle].IncludeInTotals = 1 -- Р’РєР»СЋС‡Р°С‚СЊ РћРЎ РІ РёС‚РѕРіРё РїСЂРѕРµРєС‚Р°
+  AND [A0Proj].IncludeInTotals = 1 -- Р’РєР»СЋС‡Р°С‚СЊ РџСЂРѕРµРєС‚ РІ РёС‚РѕРіРё РєРѕРјРїР»РµРєСЃР°
+  AND [A0Proj].ProjId = 221 -- РР” РїСЂРѕРµРєС‚Р°
+  --AND [A0Proj].GUID =  -- GUID РїСЂРѕРµРєС‚Р°
 
--- Тип данных SmDUse
---'ЛС' = 0, 'Акт', 'Затраты',
-    --'Акт-затрата', 'ЛС как ОС', 'ПИР',
-    --'Акт на остатки',
-    --'Прогноз', 'Остаток прогноза',
-    --'Сверхнормативный расход ресурсов',
-    --'Утвержденная', 'Неутвержденная',
-    --'Предварительная', 'Укрупненная', 'Калькуляция',
-    --'Акт план PM', 'Акт факт PM'
+-- РўРёРї РґР°РЅРЅС‹С… SmDUse
+--'Р›РЎ' = 0, 'РђРєС‚', 'Р—Р°С‚СЂР°С‚С‹',
+    --'РђРєС‚-Р·Р°С‚СЂР°С‚Р°', 'Р›РЎ РєР°Рє РћРЎ', 'РџРР ',
+    --'РђРєС‚ РЅР° РѕСЃС‚Р°С‚РєРё',
+    --'РџСЂРѕРіРЅРѕР·', 'РћСЃС‚Р°С‚РѕРє РїСЂРѕРіРЅРѕР·Р°',
+    --'РЎРІРµСЂС…РЅРѕСЂРјР°С‚РёРІРЅС‹Р№ СЂР°СЃС…РѕРґ СЂРµСЃСѓСЂСЃРѕРІ',
+    --'РЈС‚РІРµСЂР¶РґРµРЅРЅР°СЏ', 'РќРµСѓС‚РІРµСЂР¶РґРµРЅРЅР°СЏ',
+    --'РџСЂРµРґРІР°СЂРёС‚РµР»СЊРЅР°СЏ', 'РЈРєСЂСѓРїРЅРµРЅРЅР°СЏ', 'РљР°Р»СЊРєСѓР»СЏС†РёСЏ',
+    --'РђРєС‚ РїР»Р°РЅ PM', 'РђРєС‚ С„Р°РєС‚ PM'
 
